@@ -1,0 +1,45 @@
+.header {
+    font-size: 60px;
+    margin-left: 30px;
+    margin-top: 30px;
+}
+
+.text {
+    font-size: 30px;
+    padding-left: 30px;
+}
+
+
+.robocopImg {
+    height: 370px;
+}
+
+.leftBt-div {
+
+    margin-top: 80px;
+    margin-left:50px;
+    width: 200px;
+    font-size: 20px;
+}
+
+li{
+    margin-top: 10px;
+    font-size:16px;
+}
+
+.login-box {
+    text-align: center;
+    margin: 50px;
+    padding: 100px;
+    background-color: #222e42;
+    color: white;
+    height: 500px;
+}
+
+left-div{
+    margin: 30px;
+}
+
+.txt-box {
+    margin-top:20px;
+}
