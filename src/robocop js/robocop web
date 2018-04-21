@@ -1,0 +1,141 @@
+//refer to codepen for demo and current progress : https://codepen.io/nancyyy/pen/KogLBV
+
+//html part
+<div class="center">
+<h1 class="heading"> Robocop Tracker</h1>
+</div>
+  <div class = "row" >
+
+    <div class="col-sm-2"></div>
+    <div class = "col-sm-6">
+    <canvas id="myCanvas" width="800" height="800" ></canvas>
+      </div>
+    
+    <div class="col-sm-3"><div class= "box">
+      <h2>Tracker Status</h2>
+      <p1>current position x: y:</p1>
+      <button class= "button">Relocate</button>
+      <button class= "button">Update Map</button>
+      <button class= "button">Switch Mode</button>
+      
+      <button>Speaker</button>
+      <button>Scan Surrounding</button>
+      </div></div>
+    
+    </div>
+   
+
+//css part
+
+.center{
+  text-align:center;
+}
+.heading{ 
+  font-family : "arial";
+}
+
+.box{
+  height:800px;
+  background-color: #4c4c4c;
+  padding: 30px;
+  font-family : "arial";
+  color: white;
+}
+
+.button{
+  height: 30px;
+  width: 100px;
+  background-color: black;
+}
+
+//js part
+
+//map -must start with 0,0 and end with 0,0
+var map = [[0,0], [15,10], [700,10], [700,70],[600,100],[600,542],[700, 610], [700,700], [200,700] ,[50,600],[50,600],[15,10]];
+
+//position of the robot
+var coord = [500,500];
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+
+drawMap();
+
+//register coordinates when canvas is pressed, draw a dot at position
+canvas.addEventListener("mousedown", updateMap, false);
+
+//updates when location changes
+drawCoord(coord[0],coord[1], "red");
+
+
+//draw robot position
+function drawCoord(x, y, color) {
+  
+  ctx.arcStyle = color;
+  ctx.beginPath();
+  ctx.arc(x, y, 5, 0, 2 * Math.PI, true);
+  ctx.stroke();
+  ctx.fillStyle = color; 
+  ctx.fill();             
+}
+
+function drawMap(){
+ctx.fillStyle = "black";
+ctx.fillRect(0,0,1000,1000);
+ctx.strokeStyle="green";
+ctx.beginPath();
+for(i=1; i< map.length; i++){
+  ctx.moveTo(map[i-1][0], map[i-1,1]);
+  ctx.lineTo(map[i][0], map[i][1]);
+  ctx.stroke();
+  }
+}
+
+function updateMap(event){
+     ctx.clearRect(0, 0, canvas.width, canvas.height);
+     //redraw
+     drawMap();
+     drawCoord(coord[0],coord[1], "red");
+    
+     var rect = canvas.getBoundingClientRect();
+     var x = event.clientX - rect.left; 
+     var y = event.clientY - rect.top; 
+     
+     var inside = inPoly(x,y, map);
+  if(inside == true){
+    drawCoord(x,y,"blue");
+  }
+  else{
+    drawCoord(x,y,"green");
+  }
+}
+
+
+  function inPoly (x, y, arr) {
+        var cornersX = [];
+        var cornersY = [];
+    
+        for(i = 1; i < arr.length; i++){
+          cornersX[i-1] = arr[i][0];
+          cornersY[i-1] = arr[i][1];
+        }
+    
+        var i, j =cornersX.length-1 ;
+        var  oddNodes=false;
+
+        var polyX = cornersX;
+        var polyY = cornersY;
+        for (i=0; i<cornersX.length; i++) {
+            if ((polyY[i]< y && polyY[j]>=y ||  polyY[j]< y && polyY[i]>=y) &&  (polyX[i]<=x || polyX[j]<=x)) {
+              oddNodes^=(polyX[i]+(y-polyY[i])/(polyY[j]-polyY[i])*(polyX[j]-polyX[i])<x); 
+            }
+            j=i; 
+        }
+
+          return oddNodes;
+    }
+
+
+
+ 
